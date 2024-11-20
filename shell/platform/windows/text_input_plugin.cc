@@ -22,7 +22,7 @@ static constexpr char kHideMethod[] = "TextInput.hide";
 static constexpr char kSetMarkedTextRect[] = "TextInput.setMarkedTextRect";
 static constexpr char kSetEditableSizeAndTransform[] =
     "TextInput.setEditableSizeAndTransform";
-
+static constexpr char kSetCaretRect[] = "TextInput.setCaretRect";
 static constexpr char kMultilineInputType[] = "TextInputType.multiline";
 
 static constexpr char kUpdateEditingStateMethod[] =
@@ -327,7 +327,7 @@ void TextInputPlugin::HandleMethodCall(
       active_model_->SetComposingRange(
           TextRange(composing_base, composing_extent), cursor_offset);
     }
-  } else if (method.compare(kSetMarkedTextRect) == 0) {
+  } else if (method.compare(kSetCaretRect) == 0) {
     // TODO(loicsharma): Remove implicit view assumption.
     // https://github.com/flutter/flutter/issues/142845
     FlutterWindowsView* view = engine_->view(kImplicitViewId);
@@ -349,8 +349,7 @@ void TextInputPlugin::HandleMethodCall(
         y == args.MemberEnd() || y->value.IsNull() ||          //
         width == args.MemberEnd() || width->value.IsNull() ||  //
         height == args.MemberEnd() || height->value.IsNull()) {
-      result->Error(kInternalConsistencyError,
-                    "Composing rect values invalid.");
+      result->Error(kInternalConsistencyError, "Caret rect values invalid.");
       return;
     }
     composing_rect_ = {{x->value.GetDouble(), y->value.GetDouble()},
