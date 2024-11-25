@@ -1,0 +1,31 @@
+1、管理员权限启动命令行
+
+2、
+创建目录
+mkdir 3.24.4 && cd 3.24.4
+
+设置代理
+set http_proxy=http://192.168.88.88:1234
+set https_proxy=http://192.168.88.88:1234
+
+新建 .gclient 文件
+solutions = [
+  {
+    "custom_deps": {},
+    "deps_file": "DEPS",
+    "managed": False,
+    "name": "src/flutter",
+    "safesync_url": "",
+    "url": "https://github.com/weedsboy/engine.git@3.24.4_fix_issues",
+  },
+]
+
+可修改src/flutter分支
+
+gclient sync
+
+cd src
+
+.\flutter\tools\gn.bat --runtime-mode=release --no-lto
+
+ninja -C out/host_release
